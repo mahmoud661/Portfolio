@@ -7,19 +7,21 @@ function App() {
   return (
     <Router>
       <div>
-        <AnimatedCursor
-          innerSize={4}
-          outerSize={20}
-          innerScale={1}
-          outerScale={2}
-          outerAlpha={0}
-          innerStyle={{
-            backgroundColor: "white",
-          }}
-          outerStyle={{
-            border: "2px solid white",
-          }}
-        />
+        <div className="mouseee">
+          <AnimatedCursor
+            innerSize={4}
+            outerSize={20}
+            innerScale={1}
+            outerScale={2}
+            outerAlpha={0}
+            innerStyle={{
+              backgroundColor: "white",
+            }}
+            outerStyle={{
+              border: "2px solid white",
+            }}
+          />
+        </div>
         <Routes>
           <Route path="/" element={<Home />} />
         </Routes>
