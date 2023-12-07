@@ -1,0 +1,21 @@
+/* ScrollAnimation.css */
+.scroll-animation-container {
+  opacity: 0;
+  transform: translatex(20px);
+  transition: opacity 0.3s, transform 0.8s;
+}
+
+
+
+
+.scroll-animation-container_right {
+  opacity: 0;
+
+  transform: translatex(-20px);
+  transition: opacity 0.5s, transform 0.8s;
+}
+
+.animate {
+  opacity: 1;
+  transform: translatex(0);
+}
