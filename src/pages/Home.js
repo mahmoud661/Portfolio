@@ -37,7 +37,7 @@ function Home() {
       <div className={`Bar ${scrolled ? "scrolled" : ""}`}>
         <div className="Bar_title">
           <span style={{ color: "#801f1d" }}>{"<"}</span>
-          {"$$$$$$$$$$$$$"}
+          {"Doooo"}
           <span style={{ color: "#801f1d" }}>{"/>"}</span>
         </div>
         <div className="navigation">
