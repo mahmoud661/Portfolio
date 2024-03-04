@@ -30,6 +30,7 @@ const Projects = () => {
             des_out="2D action game"
             tec={["Unreal Engine 5", "C++"]}
             image={StayTuned}
+            circleColor="#100000"
             link={
               <p style={{ color: "#ff332f" }}>
                 not available yet stay stay tuned
