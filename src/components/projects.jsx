@@ -3,6 +3,7 @@ import "../crad.css";
 import Card from "./card";
 import Conversa_main from "../images/projects/Conversa_main.png";
 import TimeLessTales from "../images/projects/TimeLessTales.png";
+import StayTuned from "../images/StayTuned.gif";
 const Projects = () => {
   
   return (
@@ -19,10 +20,21 @@ const Projects = () => {
           <Card
             animDirection="_right"
             title="RetroRun"
-            tec={["Unreal Enging 5", "PaperZD", "Aseprite", "C++"]}
+            tec={["Unreal Engine 5", "PaperZD", "Aseprite", "C++"]}
             des_out="2D game platform"
             des="smaple 2D game platform ,where i used new plugin in unreal engin 5 to handel 2d assets."
             link={<p style={{ color: "#ff332f" }}>not available</p>}
+          ></Card>
+          <Card
+            title="Project Eon"
+            des_out="2D action game"
+            tec={["Unreal Engine 5", "C++"]}
+            image={StayTuned}
+            link={
+              <p style={{ color: "#ff332f" }}>
+                not available yet stay stay tuned
+              </p>
+            }
           ></Card>
         </div>
       </div>
