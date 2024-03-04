@@ -94,6 +94,7 @@ const Card = (props) => {
             <div className="card_inside_div">
               <img 
                 className="card_image_inside"
+                height={190}
                 src={props.image || game1}
                 alt=""
               />
@@ -157,7 +158,7 @@ const Card = (props) => {
                 ></div>
 
                 <div className={`card-inner`}>
-                  <img className="game_gif" src={props.image || game1} alt="" />
+                  <img height={100} className="game_gif" src={props.image || game1} alt="" />
                   <h2>{props.title}</h2>
                   <div>{props.des_out}</div>
                 </div>
