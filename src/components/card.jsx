@@ -92,12 +92,14 @@ const Card = (props) => {
               </svg>
             </button>
             <div className="card_inside_div">
-              <img 
-                className="card_image_inside"
-                height={190}
-                src={props.image || game1}
-                alt=""
-              />
+              <div className="card_image_inside_div">
+                <img
+                  className="card_image_inside"
+                  height={190}
+                  src={props.image || game1}
+                  alt=""
+                />
+              </div>
               <h1>{props.title}</h1>
               <div className="description">{props.des}</div>
               <div className="visitLink">{props.link}</div>
@@ -158,7 +160,12 @@ const Card = (props) => {
                 ></div>
 
                 <div className={`card-inner`}>
-                  <img height={100} className="game_gif" src={props.image || game1} alt="" />
+                  <img
+                    height={100}
+                    className="game_gif"
+                    src={props.image || game1}
+                    alt=""
+                  />
                   <h2>{props.title}</h2>
                   <div>{props.des_out}</div>
                 </div>
