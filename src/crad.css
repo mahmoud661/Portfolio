@@ -323,6 +323,7 @@
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Add this line */
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -404,8 +405,8 @@
   border-radius: 20px;
   transition: 700ms;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Add this line */
   animation: fadee-in 0.5s ease 200ms backwards;
-
 }
 .card_inside_div {
   display: flex;

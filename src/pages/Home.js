@@ -6,7 +6,7 @@ import About from "../components/about";
 import "../App.css";
 import { useEffect, useState } from "react";
 import Burger from "../components/burgermenu";
-
+import Certificates from "../components/Certificates";
 function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [scrollValue, setScrollValue] = useState(0);
@@ -56,7 +56,7 @@ function Home() {
       <About></About>
       <Projects></Projects>
       <Lab></Lab>
-
+<Certificates></Certificates>
       <Contact></Contact>
     </div>
   );

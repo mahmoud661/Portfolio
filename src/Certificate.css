@@ -1,0 +1,26 @@
+.certificates_container{
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+}
+.cer_image{
+    max-width: 200px;
+    aspect-ratio: 3/2;
+        border: 20px solid transparent; /* Transparent to show border image */
+
+border-image: url('./images/Black\ Border.png') 30 round;   
+}
+.certificates{
+background-color: #111111;
+  margin-top: -0px;
+  padding-left: 15%;
+padding-top: 50px;}
+
+.certificate{
+    transition: all 0.3s ease-in-out;   
+}
+.certificate:hover{
+transform: scale(1.1);
+}
