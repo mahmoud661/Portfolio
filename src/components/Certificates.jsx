@@ -3,6 +3,9 @@ import "../Certificate.css";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import ScrollAnimation from "./scrollanimate";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 export default function Certificates() {
   return (
     <div className="section">
@@ -17,10 +20,18 @@ export default function Certificates() {
           <PhotoProvider>
             {data.map((item, index) => {
               return (
-                <ScrollAnimation direction={index % 2 === 0 ? "_right" : ""}>
-                  <div key={index} className="certificate">
+                <ScrollAnimation
+                  direction={index % 2 === 0 ? "_right" : ""}
+                  key={index}
+                >
+                  <div className="certificate">
                     <PhotoView src={item}>
-                      <img src={item} alt="certificate" className="cer_image" />
+                      <LazyLoadImage
+                        src={item}
+                        alt="certificate"
+                        className="cer_image"
+                        effect="blur"
+                      />
                     </PhotoView>
                   </div>
                 </ScrollAnimation>
