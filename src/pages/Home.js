@@ -56,7 +56,7 @@ function Home() {
       <About></About>
       <Projects></Projects>
       <Lab></Lab>
-<Certificates></Certificates>
+      <Certificates></Certificates>
       <Contact></Contact>
     </div>
   );

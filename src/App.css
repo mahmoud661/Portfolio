@@ -3,7 +3,6 @@
 html,body {
  color: #e8eae1;
   font-family: 'Playfair Display', serif;
-  cursor: none;
   height: 100%;
     scroll-behavior: smooth;
   background-color: #111111;
@@ -374,7 +373,7 @@ a:hover{
 
 }
 .about_title{
-  color:#922321 ;
+  color:#922321;
   font-size: 24px;
   position: relative;
   right: 35%;
@@ -532,10 +531,7 @@ a:hover{
   }
 }
 @media (max-width: 767px) {
-  .mouseee{
-    display: none;
-    visibility: hidden;
-  }
+  
 .navigation{
   display: none;
 }
@@ -559,3 +555,4 @@ a:hover{
   visibility: hidden;
 }
 }
+
