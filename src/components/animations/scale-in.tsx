@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface ScaleInProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ScaleInProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   delay?: number;
 }

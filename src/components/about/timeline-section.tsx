@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 import TimelineCard from "./timeline-card";
 import { FadeIn } from "@/components/animations/fade-in";
