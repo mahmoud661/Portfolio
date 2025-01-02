@@ -1,0 +1,1 @@
+import{j as i,c as a}from"./index-BNXbxCoW.js";import{m as e}from"./ui-vendor-Bvd8MPr9.js";function n({children:n,delay:o=0,className:r,...s}){return i.jsx(e.div,{initial:{opacity:0,y:20},whileInView:{opacity:1,y:0},viewport:{once:!0},transition:{duration:.5,delay:o},className:a(r),...s,children:n})}export{n as F};
