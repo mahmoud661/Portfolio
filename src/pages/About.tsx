@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Code2, Brain, Rocket, Briefcase, GraduationCap, Sparkles } from "lucide-react";
+import { Code2, Brain, Briefcase, GraduationCap, Sparkles } from "lucide-react";
 import { FadeIn } from "@/components/animations/fade-in";
 import TimelineItem from "@/components/about/timeline-item";
 import Particles from "@/components/ui/particles";
