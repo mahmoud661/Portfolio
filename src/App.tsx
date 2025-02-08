@@ -1,5 +1,5 @@
+import React, { useState, useEffect, lazy, Suspense, memo } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { useState, useEffect, lazy, Suspense } from "react";
 import Navbar from "./components/navbar/navbar";
 import LoadingScreen from "./components/loading/loading-screen";
 
@@ -65,4 +65,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);

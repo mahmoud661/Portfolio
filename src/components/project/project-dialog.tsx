@@ -27,6 +27,7 @@ export default function ProjectDialog({ project, isOpen, onClose }: ProjectDialo
                   className="w-full h-full object-cover"
                   autoPlay
                   controls
+                  preload="metadata"
                 />
               ) : (
                 <>
@@ -34,6 +35,7 @@ export default function ProjectDialog({ project, isOpen, onClose }: ProjectDialo
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <button
                     onClick={() => setIsPlaying(true)}
@@ -48,6 +50,7 @@ export default function ProjectDialog({ project, isOpen, onClose }: ProjectDialo
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             )}
           </div>

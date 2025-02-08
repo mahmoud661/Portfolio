@@ -1,8 +1,11 @@
-import { motion } from "framer-motion";
+import {  Suspense } from "react";
+import React from "react";
 import { Code2, Brain, Briefcase, GraduationCap, Sparkles } from "lucide-react";
 import { FadeIn } from "@/components/animations/fade-in";
 import TimelineItem from "@/components/about/timeline-item";
-import Particles from "@/components/ui/particles";
+import { motion } from "framer-motion";
+// Lazy load Particles component
+const Particles = React.lazy(() => import("@/components/ui/particles"));
 
 const journey = [
   {
@@ -53,13 +56,14 @@ const skills = [
 export default function About() {
   return (
     <main className="min-h-screen py-20 px-4 md:px-8 lg:px-16">
-      <Particles
-        className="absolute inset-0"
-        quantity={100}
-        staticity={30}
-        ease={50}
-      />
-      
+      <Suspense fallback={null}>
+        <Particles
+          className="absolute inset-0"
+          quantity={100}
+          staticity={30}
+          ease={50}
+        />
+      </Suspense>
       <div className="max-w-7xl mx-auto space-y-24 relative z-10">
         {/* Hero Section */}
         <FadeIn>
