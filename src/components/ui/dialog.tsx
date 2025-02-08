@@ -2,6 +2,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createPortal } from "react-dom";
 
 interface DialogProps {
   isOpen: boolean;
@@ -32,7 +33,13 @@ export function Dialog({ isOpen, onClose, children, className, size = "lg" }: Di
     };
   }, [isOpen]);
 
-  return (
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -40,10 +47,13 @@ export function Dialog({ isOpen, onClose, children, className, size = "lg" }: Di
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 z-[999] bg-background/80 backdrop-blur-sm"
+            onClick={handleOverlayClick}
+            className="fixed inset-0 z-[9999] bg-background/80 backdrop-blur-sm"
           />
-          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+          <div 
+            className="fixed inset-0 z-[10000] flex items-center justify-center p-4"
+            onClick={handleOverlayClick}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -72,6 +82,7 @@ export function Dialog({ isOpen, onClose, children, className, size = "lg" }: Di
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import ThemeToggle from "../ui/theme-toggle";
 import MobileMenu from "./mobile-menu";
 
-function NavbarDefault() {
+function NavbarDefault({ className = "" }: { className?: string }) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -26,7 +26,7 @@ function NavbarDefault() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-10 py-5 bg-background border-b border-border"
+        className={`flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-10 py-5 bg-background border-b border-border ${className}`}
       >
         <div className="flex justify-between items-center mb-4 md:mb-0">
           <Link to="/" className="text-xl text-foreground font-semibold">

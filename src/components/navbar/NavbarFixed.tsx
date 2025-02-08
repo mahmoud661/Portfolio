@@ -25,7 +25,7 @@ const navVariants = {
   },
 };
 
-function NavbarFixed() {
+function NavbarFixed({ visible }: { visible: boolean }) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -45,10 +45,10 @@ function NavbarFixed() {
     <>
       <motion.div
         initial="initial"
-        animate="animate"
-        exit="exit"
+        animate={visible ? "animate" : "exit"}
         variants={navVariants}
-        className="fixed z-[99] top-4 left-1/2 -translate-x-1/2 rounded-2xl p-1 bg-background/5 backdrop-blur-lg border border-border"
+        className="fixed z-[50] top-4 left-1/2 -translate-x-1/2 rounded-2xl p-1 bg-background/5 backdrop-blur-lg border border-border transition-opacity duration-300"
+        style={{ opacity: visible ? 1 : 0, pointerEvents: visible ? "auto" : "none" }}
       >
         <div className="flex items-center md:hidden px-4 py-2 gap-2">
           <Link to="/" className="text-lg font-semibold">
