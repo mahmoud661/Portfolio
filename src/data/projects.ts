@@ -1,36 +1,71 @@
 import { Project } from "@/types";
-
+import coding from "../assets/projects/Coding-speed-test.png";
 export const projects: Project[] = [
   {
-    title: "E-Commerce Platform",
-    description: "A modern e-commerce platform built with React and Node.js, featuring real-time inventory management, secure payments, and an intuitive admin dashboard.",
-    technologies: ["React", "Node.js", "MongoDB", "Express", "Redux"],
-    github: "https://github.com/yourusername/ecommerce",
-    demo: "https://ecommerce-demo.com",
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80"
+    title: "Conversa",
+    description:
+      "A real-time chat application using Socket.io for instant messaging.",
+    technologies: ["React", "Node.js", "Socket.io", "MongoDB"],
+    github: "https://github.com/mahmoud661/Conversa2.0",
+    demo: "",
+    image:
+      "https://images.pexels.com/photos/935949/pexels-photo-935949.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
   {
-    title: "AI Image Generator",
-    description: "An AI-powered image generation tool that creates unique artwork using DALL-E API. Features custom style transfer and advanced image manipulation options.",
-    technologies: ["Python", "FastAPI", "React", "OpenAI"],
-    github: "https://github.com/yourusername/ai-image-gen",
-    demo: "https://ai-image-gen-demo.com",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2832&q=80"
+    title: "DevPath",
+    description:
+      "A roadmap platform that provides AI-generated learning paths and real-time job recommendations.",
+    technologies: ["React", "AI", "Tailwind CSS"],
+    github: "https://github.com/mahmoud661/DevPath",
+    demo: "https://dev-path-rho.vercel.app/",
+    image:
+      "https://private-user-images.githubusercontent.com/63370835/407047924-ed1e974a-4f1e-4b7d-aff1-04514eda534c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDAzNTQzMzgsIm5iZiI6MTc0MDM1NDAzOCwicGF0aCI6Ii82MzM3MDgzNS80MDcwNDc5MjQtZWQxZTk3NGEtNGYxZS00YjdkLWFmZjEtMDQ1MTRlZGE1MzRjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAyMjMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMjIzVDIzNDAzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA4Y2M5Zjc4OTE3ZGMyMzNiZmMwNWVjYzgxMTE1ODY0NTQ0MGU3NjgxODRiYmE2MjBjM2ZhMGU3MTQ1YzAxNGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.xnNlPg4g50qNQkGtu__3xC715lBw4ApKA26C6dEHdmI",
   },
   {
-    title: "Task Management App",
-    description: "A collaborative task management application with real-time updates, team collaboration features, and advanced project tracking capabilities.",
-    technologies: ["Next.js", "Firebase", "Tailwind CSS", "TypeScript"],
-    github: "https://github.com/yourusername/task-manager",
-    demo: "https://task-manager-demo.com",
-    image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80"
+    title: "Coding Speed Test",
+    description:
+      "A Next.js project that allows users to test and improve their coding speed with real-time challenges and accuracy tracking.",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    github: "https://github.com/mahmoud661/Coding-speed-test",
+    demo: "",
+    image: coding,
   },
   {
-    title: "Smart Home Dashboard",
-    description: "A comprehensive IoT dashboard for managing smart home devices, featuring real-time monitoring, automation rules, and energy consumption analytics.",
-    technologies: ["React", "Node.js", "Socket.io", "Chart.js"],
-    github: "https://github.com/yourusername/smart-home",
-    demo: "https://smart-home-demo.com",
-    image: "https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-  }
+    title: "Dream Canvas",
+    description:
+      "A React + Vite project that generates AI-generated images based on user prompts and customizable options.",
+    technologies: ["React", "Tailwind CSS"],
+    github: "https://github.com/mahmoud661/Dream-canvas",
+    demo: "",
+    image:
+      "https://private-user-images.githubusercontent.com/63370835/405346650-7f6967cf-3a73-4388-9463-830158abcffc.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDAzNTQyNjIsIm5iZiI6MTc0MDM1Mzk2MiwicGF0aCI6Ii82MzM3MDgzNS80MDUzNDY2NTAtN2Y2OTY3Y2YtM2E3My00Mzg4LTk0NjMtODMwMTU4YWJjZmZjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAyMjMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMjIzVDIzMzkyMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWIzNzZhODA3NzdiOGQzNDU4M2Q3MjU0NWEwMTg1MjEyYWUyNzFiNmEzYmI0NGJiNTFjZDAyZWYxNDE1NWQ1ZTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.D5sZbvGhIFGtl-brk699GaLzkao_812MUrk-T-f4YKY",
+  },
+  {
+    title: "InteractSystemUnreal2D",
+    description:
+      "An Unreal Engine 5 system that allows interaction with objects in a 2D environment.",
+    technologies: ["Unreal Engine 5", "C++"],
+    github: "https://github.com/yourusername/InteractSystemUnreal2D",
+    demo: "",
+    image:
+      "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/05/Unreal_Engine_5_logo_graphic.jpg",
+  },
+  {
+    title: "Project Eon",
+    description: "A 2D hack-and-slash game built in Unreal Engine 5.",
+    technologies: ["Unreal Engine 5", "C++"],
+    github: "https://github.com/mahmoud661/ProjectEon-5.3",
+    demo: "",
+    image:
+      "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/05/Unreal_Engine_5_logo_graphic.jpg",
+  },
+  {
+    title: "Face Recognition",
+    description:
+      "A face recognition system using machine learning with PostgreSQL for storing face embeddings. Implements a read model architecture for efficient data retrieval and face matching operations.",
+    technologies: ["Python", "OpenCV", "PostgreSQL", "Machine Learning"],
+    github: "https://github.com/mahmoud661/FaceRecognition",
+    demo: "",
+    image: "https://media.istockphoto.com/id/1464561797/photo/artificial-intelligence-processor-unit-powerful-quantum-ai-component-on-pcb-motherboard-with.jpg?b=1&s=612x612&w=0&k=20&c=7eiJE_qDSf78_dsedcaUi0sTLN2cExU94Wh3tjoP-3o=",
+  },
 ];

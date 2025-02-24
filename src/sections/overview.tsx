@@ -21,7 +21,9 @@ export default function Overview() {
       </div>
 
       <div className="flex justify-center mt-6 md:mt-8 lg:mt-10">
-        <ShinyButton className="w-fit">DownLoad resume</ShinyButton>
+        <a href="/src/assets/Mahmoud Zreiqi -CV.pdf" download>
+          <ShinyButton className="w-fit">Download Resume</ShinyButton>
+        </a>
       </div>
     </div>
   );

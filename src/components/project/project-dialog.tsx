@@ -82,24 +82,49 @@ function ProjectDialog({ project, isOpen, onClose }: ProjectDialogProps) {
               ))}
             </div>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
-              >
-                <Github className="w-5 h-5" />
-                <span>View Code</span>
-              </a>
-              <a
-                href={project.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-colors"
-              >
-                <ExternalLink className="w-5 h-5" />
-                <span>Live Demo</span>
-              </a>
+              {project.github ? (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
+                >
+                  <Github className="w-5 h-5" />
+                  <span>View Code</span>
+                </a>
+              ) : (
+                <div
+                  title="GitHub not available"
+                  role="button"
+                  aria-disabled="true"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-secondary opacity-50 cursor-not-allowed select-none"
+                >
+                  <Github className="w-5 h-5" />
+                  <span>View Code</span>
+                </div>
+              )}
+
+              {project.demo ? (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-foreground text-background hover:bg-foreground/90 transition-colors"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  <span>Live Demo</span>
+                </a>
+              ) : (
+                <div
+                  title="Live Demo not available"
+                  role="button"
+                  aria-disabled="true"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-foreground text-background opacity-50 cursor-not-allowed select-none"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  <span>Live Demo</span>
+                </div>
+              )}
             </div>
           </motion.div>
         </motion.div>

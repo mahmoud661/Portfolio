@@ -1,6 +1,6 @@
 import {  Suspense } from "react";
 import React from "react";
-import { Code2, Brain, Briefcase, GraduationCap, Sparkles } from "lucide-react";
+import { Code2, Briefcase, GraduationCap, Sparkles } from "lucide-react";
 import { FadeIn } from "@/components/animations/fade-in";
 import TimelineItem from "@/components/about/timeline-item";
 import { motion } from "framer-motion";
@@ -8,49 +8,65 @@ import { motion } from "framer-motion";
 const Particles = React.lazy(() => import("@/components/ui/particles"));
 
 const journey = [
-  {
-    title: "Senior Full Stack Developer",
-    subtitle: "Tech Corp",
-    period: "2022 - Present",
-    description: "Leading development teams and architecting scalable solutions. Implementing best practices and mentoring junior developers.",
-    technologies: ["React", "Node.js", "AWS", "MongoDB"],
-    icon: Briefcase
-  },
-  {
-    title: "Master's in Computer Science",
-    subtitle: "Tech University",
-    period: "2020 - 2022",
-    description: "Specialized in Artificial Intelligence and Machine Learning. Conducted research on neural networks and deep learning.",
-    icon: GraduationCap
-  },
-  {
-    title: "Full Stack Developer",
-    subtitle: "Digital Solutions",
-    period: "2018 - 2020",
-    description: "Built end-to-end applications and mentored junior developers. Improved system performance by 40%.",
-    technologies: ["React", "Express", "PostgreSQL", "Docker"],
-    icon: Code2
-  },
-  {
-    title: "Bachelor's in Software Engineering",
-    subtitle: "Engineering College",
-    period: "2014 - 2018",
-    description: "Focus on Software Development and System Design. Led multiple successful project teams.",
-    icon: Brain
-  }
+	{
+		title: "Education: Bachelor of AI & Data Science",
+		subtitle: "Al Hussain Bin Talal University",
+		period: "2021 - 2025",
+		description:
+			"Currently a fourth-year IT student specializing in AI, data science, and full-stack MERN development.",
+		icon: GraduationCap
+	},
+	{
+		title: "Internship: Marketing Department",
+		subtitle: "Pioneer Academy",
+		period: "July 2023 - September 2023",
+		description:
+			"Focused on social media marketing, digital content creation, community management, and advertising.",
+		icon: Briefcase
+	},
+	{
+		title: "Internship: Jordan Webmaster",
+		subtitle: "Web Development Internship",
+		period: "July 2022 - September 2022",
+		description:
+			"Worked on web development tasks, contributing to both front-end and back-end projects.",
+		icon: Briefcase
+	},
+	{
+		title: "Internship: AI & Data Science",
+		subtitle: "Estarta Solutions",
+		period: "July 2024 - September 2024",
+		description:
+			"Developed machine learning applications (face recognition, auto-complete systems using CNN and NLP) and built responsive frontends with React.",
+		icon: Code2
+	}
 ];
 
 const skills = [
-  "JavaScript/TypeScript",
-  "React.js",
-  "Node.js",
-  "Python",
-  "AWS",
-  "Docker",
-  "MongoDB",
-  "PostgreSQL",
-  "GraphQL",
-  "Machine Learning"
+	"JavaScript",
+	"React.js",
+	"TypeScript",
+	"Node.js",
+	"Express.js",
+	"MongoDB",
+	"Git & GitHub",
+	"PostgreSQL",
+	"FAST API",
+	"TensorFlow",
+	"Socket IO",
+	"CNN",
+	"RNN",
+	"Machine Learning",
+	"Vite",
+	"NLP",
+	"pandas",
+	"numpy",
+	"matplotlib",
+	"NestJS",
+	"Tailwind",
+	"NoSQL",
+	"Next.js",
+	"UE5"
 ];
 
 export default function About() {
@@ -89,8 +105,8 @@ export default function About() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              A passionate developer with {new Date().getFullYear() - 2018}+ years of experience,
-              dedicated to crafting exceptional digital experiences through clean code and innovative solutions.
+             As an ambitious fourth-year IT student at Alhussain Bin Talal University, I excel in blending academic rigor with practical experience.
+             My focus on AI, data science, and full-stack MERN development drives me to create innovative, intelligent solutions while delivering seamless user experiences.
             </motion.p>
           </section>
         </FadeIn>

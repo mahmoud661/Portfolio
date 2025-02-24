@@ -96,9 +96,13 @@ function NavbarFixed({ visible }: { visible: boolean }) {
             <ThemeToggle />
           </li>
           <li>
-            <button className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground hover:bg-background hover:text-foreground border border-foreground transition-all duration-300">
+            <a
+              href="/src/assets/Mahmoud Zreiqi -CV.pdf"
+              download
+              className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground hover:bg-background hover:text-foreground border border-foreground transition-all duration-300"
+            >
               Resume
-            </button>
+            </a>
           </li>
         </ul>
       </motion.div>

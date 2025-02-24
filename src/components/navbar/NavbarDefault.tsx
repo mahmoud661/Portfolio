@@ -26,7 +26,7 @@ function NavbarDefault({ className = "" }: { className?: string }) {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-10 py-5 bg-background border-b border-border ${className}`}
+        className={`flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-10 pt-5 pb-2 bg-background border-b border-border ${className}`}
       >
         <div className="flex justify-between items-center mb-4 md:mb-0">
           <Link to="/" className="text-xl text-foreground font-semibold">
@@ -76,9 +76,13 @@ function NavbarDefault({ className = "" }: { className?: string }) {
         </ul>
 
         <div className="hidden md:block">
-          <button className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground border border-foreground hover:bg-background hover:text-foreground transition-colors">
+          <a
+            href="/src/assets/Mahmoud Zreiqi -CV.pdf"
+            download
+            className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground border border-foreground hover:bg-background hover:text-foreground transition-colors"
+          >
             Resume
-          </button>
+          </a>
         </div>
       </motion.nav>
 
