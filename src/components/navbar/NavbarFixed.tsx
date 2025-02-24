@@ -4,6 +4,20 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import ThemeToggle from "../ui/theme-toggle";
 import MobileMenu from "./mobile-menu";
+import CV from "../../assets/Mahmoud Zreiqi -CV.pdf";
+
+const handleDownload = async () => {
+  const response = await fetch(CV);
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Mahmoud-Zreiqi-CV.pdf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+};
 
 const navVariants = {
   initial: {
@@ -96,13 +110,12 @@ function NavbarFixed({ visible }: { visible: boolean }) {
             <ThemeToggle />
           </li>
           <li>
-            <a
-              href="/src/assets/Mahmoud Zreiqi -CV.pdf"
-              download
+            <button
+              onClick={handleDownload}
               className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground hover:bg-background hover:text-foreground border border-foreground transition-all duration-300"
             >
               Resume
-            </a>
+            </button>
           </li>
         </ul>
       </motion.div>

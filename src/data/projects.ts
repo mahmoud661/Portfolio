@@ -3,6 +3,15 @@ import coding from "../assets/projects/Coding-speed-test.png";
 import Devpath from "../assets/projects/Devpath.png";
 export const projects: Project[] = [
   {
+    title: "DevPath",
+    description:
+      "A roadmap platform that provides AI-generated learning paths and real-time job recommendations.",
+    technologies: ["React", "AI", "Tailwind CSS"],
+    github: "https://github.com/mahmoud661/DevPath",
+    demo: "https://dev-path-rho.vercel.app/",
+    image: Devpath,
+  },
+  {
     title: "Conversa",
     description:
       "A real-time chat application using Socket.io for instant messaging.",
@@ -12,15 +21,7 @@ export const projects: Project[] = [
     image:
       "https://images.pexels.com/photos/935949/pexels-photo-935949.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
   },
-  {
-    title: "DevPath",
-    description:
-      "A roadmap platform that provides AI-generated learning paths and real-time job recommendations.",
-    technologies: ["React", "AI", "Tailwind CSS"],
-    github: "https://github.com/mahmoud661/DevPath",
-    demo: "https://dev-path-rho.vercel.app/",
-    image: Devpath,
-  },
+
   {
     title: "Coding Speed Test",
     description:

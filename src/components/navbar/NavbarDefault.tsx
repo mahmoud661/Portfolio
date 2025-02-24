@@ -4,6 +4,20 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import ThemeToggle from "../ui/theme-toggle";
 import MobileMenu from "./mobile-menu";
+import CV from "../../assets/Mahmoud Zreiqi -CV.pdf";
+
+const handleDownload = async () => {
+  const response = await fetch(CV);
+  const blob = await response.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Mahmoud-Zreiqi-CV.pdf";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+};
 
 function NavbarDefault({ className = "" }: { className?: string }) {
   const location = useLocation();
@@ -76,13 +90,12 @@ function NavbarDefault({ className = "" }: { className?: string }) {
         </ul>
 
         <div className="hidden md:block">
-          <a
-            href="/src/assets/Mahmoud Zreiqi -CV.pdf"
-            download
+          <button
+            onClick={handleDownload}
             className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground border border-foreground hover:bg-background hover:text-foreground transition-colors"
           >
             Resume
-          </a>
+          </button>
         </div>
       </motion.nav>
 
