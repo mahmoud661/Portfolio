@@ -19,7 +19,7 @@ const getRandomInt = (max: number) => Math.floor(Math.random() * max);
 
 export default function HyperText({
   text,
-  duration = 800,
+  duration = 2000, // Increased from 800 to 2000ms
   framerProps = {
     initial: { opacity: 0, y: -10 },
     animate: { opacity: 1, y: 0 },
@@ -58,18 +58,24 @@ export default function HyperText({
             t.map((l, i) =>
               l === " "
                 ? l
-                : i <= interations.current
+                : i < Math.floor(interations.current)
                   ? (Array.isArray(text) ? text[currentTextIndex][i] : text[i])
                   : alphabets[getRandomInt(26)],
             ),
           );
-          interations.current = interations.current + 0.1;
+          interations.current = interations.current + 0.3; // Reduced from 0.5 to 0.3 for slower progression
         } else {
+          // Ensure final state shows all correct letters
+          setDisplayText(
+            Array.isArray(text)
+              ? text[currentTextIndex].split("")
+              : text.split("")
+          );
           setTrigger(false);
           clearInterval(interval);
         }
       },
-      duration / (displayText.length * 10),
+      duration / (displayText.length * 8), // Changed from 15 to 8 for smoother timing
     );
     // Clean up interval on unmount
     return () => clearInterval(interval);
@@ -78,7 +84,7 @@ export default function HyperText({
   useEffect(() => {
     const interval = setInterval(() => {
       triggerAnimation();
-    }, 5000);
+    }, 7000); // Increased from 5000 to 7000ms for longer pause between animations
 
     return () => clearInterval(interval);
   }, []);

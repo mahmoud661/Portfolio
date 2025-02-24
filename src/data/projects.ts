@@ -1,5 +1,6 @@
 import { Project } from "@/types";
 import coding from "../assets/projects/Coding-speed-test.png";
+import Devpath from "../assets/projects/Devpath.png";
 export const projects: Project[] = [
   {
     title: "Conversa",
@@ -18,8 +19,7 @@ export const projects: Project[] = [
     technologies: ["React", "AI", "Tailwind CSS"],
     github: "https://github.com/mahmoud661/DevPath",
     demo: "https://dev-path-rho.vercel.app/",
-    image:
-      "https://private-user-images.githubusercontent.com/63370835/407047924-ed1e974a-4f1e-4b7d-aff1-04514eda534c.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDAzNTQzMzgsIm5iZiI6MTc0MDM1NDAzOCwicGF0aCI6Ii82MzM3MDgzNS80MDcwNDc5MjQtZWQxZTk3NGEtNGYxZS00YjdkLWFmZjEtMDQ1MTRlZGE1MzRjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAyMjMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMjIzVDIzNDAzOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTA4Y2M5Zjc4OTE3ZGMyMzNiZmMwNWVjYzgxMTE1ODY0NTQ0MGU3NjgxODRiYmE2MjBjM2ZhMGU3MTQ1YzAxNGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.xnNlPg4g50qNQkGtu__3xC715lBw4ApKA26C6dEHdmI",
+    image: Devpath,
   },
   {
     title: "Coding Speed Test",
@@ -66,6 +66,7 @@ export const projects: Project[] = [
     technologies: ["Python", "OpenCV", "PostgreSQL", "Machine Learning"],
     github: "https://github.com/mahmoud661/FaceRecognition",
     demo: "",
-    image: "https://media.istockphoto.com/id/1464561797/photo/artificial-intelligence-processor-unit-powerful-quantum-ai-component-on-pcb-motherboard-with.jpg?b=1&s=612x612&w=0&k=20&c=7eiJE_qDSf78_dsedcaUi0sTLN2cExU94Wh3tjoP-3o=",
+    image:
+      "https://media.istockphoto.com/id/1464561797/photo/artificial-intelligence-processor-unit-powerful-quantum-ai-component-on-pcb-motherboard-with.jpg?b=1&s=612x612&w=0&k=20&c=7eiJE_qDSf78_dsedcaUi0sTLN2cExU94Wh3tjoP-3o=",
   },
 ];
