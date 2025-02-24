@@ -1,6 +1,7 @@
 import { Project } from "@/types";
 import coding from "../assets/projects/Coding-speed-test.png";
 import Devpath from "../assets/projects/Devpath.png";
+import Dream from "../assets/projects/Dream.png"
 export const projects: Project[] = [
   {
     title: "DevPath",
@@ -38,8 +39,7 @@ export const projects: Project[] = [
     technologies: ["React", "Tailwind CSS"],
     github: "https://github.com/mahmoud661/Dream-canvas",
     demo: "",
-    image:
-      "https://private-user-images.githubusercontent.com/63370835/405346650-7f6967cf-3a73-4388-9463-830158abcffc.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDAzNTQyNjIsIm5iZiI6MTc0MDM1Mzk2MiwicGF0aCI6Ii82MzM3MDgzNS80MDUzNDY2NTAtN2Y2OTY3Y2YtM2E3My00Mzg4LTk0NjMtODMwMTU4YWJjZmZjLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTAyMjMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwMjIzVDIzMzkyMlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWIzNzZhODA3NzdiOGQzNDU4M2Q3MjU0NWEwMTg1MjEyYWUyNzFiNmEzYmI0NGJiNTFjZDAyZWYxNDE1NWQ1ZTImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.D5sZbvGhIFGtl-brk699GaLzkao_812MUrk-T-f4YKY",
+    image:Dream
   },
   {
     title: "InteractSystemUnreal2D",
