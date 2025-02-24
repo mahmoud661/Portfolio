@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import { memo, useState } from "react";
 import { Project } from "@/types";
 import { Dialog } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
@@ -44,6 +44,7 @@ function ProjectDialog({ project, isOpen, onClose }: ProjectDialogProps) {
                     loading="lazy"
                   />
                   <button
+                    aria-label="Play video"
                     onClick={() => setIsPlaying(true)}
                     className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity"
                   >
