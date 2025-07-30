@@ -1,7 +1,8 @@
 import { Project } from "@/types";
 import coding from "../assets/projects/Coding-speed-test.png";
 import Devpath from "../assets/projects/Devpath.png";
-import Dream from "../assets/projects/Dream.png"
+import Dream from "../assets/projects/Dream.png";
+import SChemaForge from "../assets/projects/Schema-Forge.png";
 export const projects: Project[] = [
   {
     title: "DevPath",
@@ -11,6 +12,15 @@ export const projects: Project[] = [
     github: "https://github.com/mahmoud661/DevPath",
     demo: "https://dev-path-rho.vercel.app/",
     image: Devpath,
+  },
+  {
+    title: "Schema Forge",
+    description:
+      "Schema Forge was created to provide developers with a simple, accessible tool for database design that doesn't require backend infrastructure. I believe that database design tools should be available to everyone, from students to professional developers, without the need for accounts or subscriptions.",
+    technologies: ["React", "Node.js", "AI", "PostgreSQL"],
+    github: "https://github.com/mahmoud661/Schema-Forge",
+    demo: "https://schema-forge.vercel.app/",
+    image: SChemaForge,
   },
   {
     title: "Conversa",
@@ -39,14 +49,7 @@ export const projects: Project[] = [
     technologies: ["React", "Tailwind CSS"],
     github: "https://github.com/mahmoud661/Dream-canvas",
     demo: "",
-    image:Dream
-    
-    
-
-
-
-
-    
+    image: Dream,
   },
   {
     title: "InteractSystemUnreal2D",
