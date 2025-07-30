@@ -3,7 +3,17 @@ import coding from "../assets/projects/Coding-speed-test.png";
 import Devpath from "../assets/projects/Devpath.png";
 import Dream from "../assets/projects/Dream.png";
 import SChemaForge from "../assets/projects/Schema-Forge.png";
+import AHUThsis from "../assets/projects/AHUThesis.png";
 export const projects: Project[] = [
+  {
+    title: "AHU Thesis",
+    description:
+      "Discover comprehensive summaries of theses and dissertations available in the library archives at Al-Hussein Bin Talal University. This resource can enhance your understanding and provide valuable insights into various research topics. Explore research that shapes our future.",
+    technologies: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+    github: "",
+    demo: "https://thesisarchive.ahu.edu.jo/",
+    image: AHUThsis,
+  },
   {
     title: "DevPath",
     description:
