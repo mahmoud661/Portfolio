@@ -1,4 +1,4 @@
-import { motion, HTMLMotionProps } from "framer-motion";
+import { m, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface ScaleInProps extends HTMLMotionProps<"div"> {
@@ -8,7 +8,7 @@ interface ScaleInProps extends HTMLMotionProps<"div"> {
 
 export function ScaleIn({ children, delay = 0, className, ...props }: ScaleInProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -22,6 +22,6 @@ export function ScaleIn({ children, delay = 0, className, ...props }: ScaleInPro
       {...props}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 
@@ -37,14 +37,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] bg-background/80 backdrop-blur-sm"
             onClick={onClose}
           />
-          <motion.div
+          <m.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -52,20 +52,20 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             className="fixed right-0 top-0 z-[9999] h-full w-[75%] max-w-sm bg-background border-l border-border p-6"
           >
             <div className="flex justify-end mb-8">
-              <motion.button
+              <m.button
                 onClick={onClose}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="p-2 hover:bg-secondary rounded-lg transition-colors"
               >
                 <X className="h-6 w-6" />
-              </motion.button>
+              </m.button>
             </div>
             
             <nav className="space-y-6">
               <ul className="space-y-4">
                 {navItems.map((item, i) => (
-                  <motion.li
+                  <m.li
                     key={item.path}
                     custom={i}
                     initial="hidden"
@@ -84,11 +84,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     >
                       {item.label}
                     </Link>
-                  </motion.li>
+                  </m.li>
                 ))}
               </ul>
               
-              <motion.button
+              <m.button
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
@@ -97,9 +97,9 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 className="w-full py-3 px-4 rounded-full text-background font-medium bg-foreground border border-foreground hover:bg-background hover:text-foreground transition-all"
               >
                 Resume
-              </motion.button>
+              </m.button>
             </nav>
-          </motion.div>
+          </m.div>
         </>
       )}
     </AnimatePresence>

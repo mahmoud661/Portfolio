@@ -3,7 +3,7 @@ import React from "react";
 import { Code2, Briefcase, GraduationCap, Sparkles } from "lucide-react";
 import { FadeIn } from "@/components/animations/fade-in";
 import TimelineItem from "@/components/about/timeline-item";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 // Lazy load Particles component
 const Particles = React.lazy(() => import("@/components/ui/particles"));
 
@@ -84,22 +84,22 @@ export default function About() {
         {/* Hero Section */}
         <FadeIn>
           <section className="text-center max-w-3xl mx-auto mb-24">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="mb-8 inline-block p-4 bg-primary/10 rounded-full"
             >
               <Sparkles className="w-8 h-8 text-primary" />
-            </motion.div>
-            <motion.h1 
+            </m.div>
+            <m.h1 
               className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
               My Journey
-            </motion.h1>
-            <motion.p 
+            </m.h1>
+            <m.p 
               className="text-lg text-muted-foreground leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ export default function About() {
             >
              As an ambitious fourth-year IT student at Alhussain Bin Talal University, I excel in blending academic rigor with practical experience.
              My focus on AI, data science, and full-stack MERN development drives me to create innovative, intelligent solutions while delivering seamless user experiences.
-            </motion.p>
+            </m.p>
           </section>
         </FadeIn>
 
@@ -115,7 +115,7 @@ export default function About() {
         <section className="mb-24">
           <div className="flex flex-wrap justify-center gap-3">
             {skills.map((skill, index) => (
-              <motion.span
+              <m.span
                 key={skill}
                 initial={{ opacity: 0, scale: 0.5 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -128,7 +128,7 @@ export default function About() {
                 className="px-4 py-2 bg-card border rounded-full text-sm font-medium hover:bg-primary/10 hover:border-primary/20 transition-colors duration-300"
               >
                 {skill}
-              </motion.span>
+              </m.span>
             ))}
           </div>
         </section>

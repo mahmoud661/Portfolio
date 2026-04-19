@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export default function ProjectFilters({
 
   return (
     <div className="flex flex-wrap gap-3 justify-center mb-12">
-      <motion.button
+      <m.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => onFilterChange("")}
@@ -32,16 +32,16 @@ export default function ProjectFilters({
       >
         All Projects
         {hoveredFilter === "all" && (
-          <motion.span
+          <m.span
             layoutId="filter-hover"
             className="absolute inset-0 rounded-full bg-primary/10"
             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
           />
         )}
-      </motion.button>
+      </m.button>
       
       {technologies.map((tech) => (
-        <motion.button
+        <m.button
           key={tech}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -57,13 +57,13 @@ export default function ProjectFilters({
         >
           {tech}
           {hoveredFilter === tech && (
-            <motion.span
+            <m.span
               layoutId="filter-hover"
               className="absolute inset-0 rounded-full bg-primary/10"
               transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
             />
           )}
-        </motion.button>
+        </m.button>
       ))}
     </div>
   );

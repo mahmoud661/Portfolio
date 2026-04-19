@@ -4,7 +4,42 @@
 @tailwind components;
 @tailwind utilities;
 
+::view-transition-group(root) {
+  animation: none;
+  z-index: auto;
+}
+
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  will-change: clip-path;
+  display: block;
+  z-index: 2;
+}
+
 @layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: theme("colors.border");
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme("colors.muted.foreground");
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;

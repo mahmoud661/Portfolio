@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import ThemeToggle from "../ui/theme-toggle";
+import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 import MobileMenu from "./mobile-menu";
 import CV from "../../assets/Mahmoud Zreiqi -CV.pdf";
 
@@ -42,7 +42,7 @@ const navVariants = {
 function NavbarFixed({ visible }: { visible: boolean }) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
@@ -57,19 +57,22 @@ function NavbarFixed({ visible }: { visible: boolean }) {
 
   return (
     <>
-      <motion.div
+      <m.div
         initial="initial"
         animate={visible ? "animate" : "exit"}
         variants={navVariants}
         className="fixed z-[50] top-4 left-1/2 -translate-x-1/2 rounded-2xl p-1 bg-background/5 backdrop-blur-lg border border-border transition-opacity duration-300"
-        style={{ opacity: visible ? 1 : 0, pointerEvents: visible ? "auto" : "none" }}
+        style={{
+          opacity: visible ? 1 : 0,
+          pointerEvents: visible ? "auto" : "none",
+        }}
       >
         <div className="flex items-center md:hidden px-4 py-2 gap-2">
           <Link to="/" className="text-lg font-semibold">
             MZ
           </Link>
           <div className="flex-1" />
-          <ThemeToggle />
+          <AnimatedThemeToggler />
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className="p-2 hover:bg-secondary rounded-lg transition-colors"
@@ -92,7 +95,7 @@ function NavbarFixed({ visible }: { visible: boolean }) {
               >
                 {item.label}
                 {isActive(item.path) && (
-                  <motion.div
+                  <m.div
                     layoutId="navbar-fixed-indicator"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
                     initial={false}
@@ -107,7 +110,7 @@ function NavbarFixed({ visible }: { visible: boolean }) {
             </li>
           ))}
           <li>
-            <ThemeToggle />
+            <AnimatedThemeToggler />
           </li>
           <li>
             <button
@@ -118,9 +121,9 @@ function NavbarFixed({ visible }: { visible: boolean }) {
             </button>
           </li>
         </ul>
-      </motion.div>
+      </m.div>
 
-      <MobileMenu 
+      <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />

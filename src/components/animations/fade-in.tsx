@@ -1,4 +1,4 @@
-import { motion, MotionProps } from "framer-motion";
+import { m, MotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface FadeInProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -8,7 +8,7 @@ interface FadeInProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function FadeIn({ children, delay = 0, className, ...props }: FadeInProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -17,6 +17,6 @@ export function FadeIn({ children, delay = 0, className, ...props }: FadeInProps
       {...(props as MotionProps)}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface OverviewCardProps {
@@ -10,7 +10,7 @@ interface OverviewCardProps {
 
 export default function OverviewCard({ icon: Icon, title, description, index }: OverviewCardProps) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -25,6 +25,6 @@ export default function OverviewCard({ icon: Icon, title, description, index }: 
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-muted-foreground">{description}</p>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

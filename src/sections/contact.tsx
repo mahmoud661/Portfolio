@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter } from "lucide-react";
 import ShinyButton from "@/components/ui/shiny-button";
 
@@ -9,7 +9,7 @@ export default function Contact() {
         Get In Touch
       </h2>
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -60,9 +60,9 @@ export default function Contact() {
               <Twitter size={24} />
             </a>
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.form
+        <m.form
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
@@ -100,7 +100,7 @@ export default function Contact() {
             ></textarea>
           </div>
           <ShinyButton className="w-full">Send Message</ShinyButton>
-        </motion.form>
+        </m.form>
       </div>
     </section>
   );

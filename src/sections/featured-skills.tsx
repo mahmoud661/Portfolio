@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Code2, Palette, Terminal, Cpu } from "lucide-react";
 import { FadeIn } from "@/components/animations/fade-in";
 
@@ -47,7 +47,7 @@ export default function FeaturedSkills() {
           {skills.map((skill, index) => {
             const Icon = skill.icon;
             return (
-              <motion.div
+              <m.div
                 key={skill.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ export default function FeaturedSkills() {
                   <h3 className="text-xl font-semibold mb-2">{skill.title}</h3>
                   <p className="text-muted-foreground">{skill.description}</p>
                 </div>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>

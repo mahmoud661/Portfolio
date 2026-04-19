@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface JourneyCardProps {
@@ -22,7 +22,7 @@ export default function JourneyCard({
 }: JourneyCardProps) {
   return (
     <div className={`flex items-center gap-8 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}>
-      <motion.div
+      <m.div
         initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
@@ -51,8 +51,8 @@ export default function JourneyCard({
             </div>
           )}
         </div>
-      </motion.div>
-      <motion.div
+      </m.div>
+      <m.div
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
@@ -63,7 +63,7 @@ export default function JourneyCard({
           left: isLeft ? '100%' : 'auto',
           right: isLeft ? 'auto' : '100%'
         }} />
-      </motion.div>
+      </m.div>
       <div className="w-1/2" />
     </div>
   );

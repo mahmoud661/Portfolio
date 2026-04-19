@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { ScaleIn } from "@/components/animations/scale-in";
 import { LucideIcon } from "lucide-react";
 
@@ -12,7 +12,7 @@ interface SkillCardProps {
 export default function SkillCard({ icon: Icon, title, skills, delay }: SkillCardProps) {
   return (
     <ScaleIn delay={delay}>
-      <motion.div 
+      <m.div 
         className="bg-card p-6 rounded-xl border hover:shadow-lg"
         whileHover={{ y: -5 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -23,7 +23,7 @@ export default function SkillCard({ icon: Icon, title, skills, delay }: SkillCar
         </div>
         <ul className="space-y-2">
           {skills.map((skill, index) => (
-            <motion.li
+            <m.li
               key={index}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -32,10 +32,10 @@ export default function SkillCard({ icon: Icon, title, skills, delay }: SkillCar
             >
               <span className="w-1.5 h-1.5 bg-foreground rounded-full" />
               {skill}
-            </motion.li>
+            </m.li>
           ))}
         </ul>
-      </motion.div>
+      </m.div>
     </ScaleIn>
   );
 }

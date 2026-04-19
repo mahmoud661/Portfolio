@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FadeIn } from "@/components/animations/fade-in";
 
 interface TimelineCardProps {
@@ -27,13 +27,13 @@ export default function TimelineCard({
           isEven ? 'md:ml-auto md:pl-8' : 'md:mr-auto md:pr-8'
         } pl-8 mb-8 md:mb-0`}
       >
-        <motion.div 
+        <m.div 
           className="absolute left-0 top-0 h-3 w-3 -translate-x-1/2 rounded-full bg-foreground md:left-0"
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         />
-        <motion.div 
+        <m.div 
           className="bg-card p-6 rounded-xl border space-y-3"
           whileHover={{ x: isEven ? -5 : 5 }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -55,7 +55,7 @@ export default function TimelineCard({
               ))}
             </div>
           )}
-        </motion.div>
+        </m.div>
       </div>
     </FadeIn>
   );

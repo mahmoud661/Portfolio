@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Award } from "lucide-react";
 import { certificates } from "@/data/certificates";
@@ -11,14 +11,14 @@ export default function FeaturedCertificates() {
     <section className="py-20 px-4 md:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
         <FadeIn className="text-center mb-16">
-          <motion.div
+          <m.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 10 }}
             className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center"
           >
             <Award className="w-8 h-8 text-primary" />
-          </motion.div>
+          </m.div>
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Certifications & Achievements
           </h2>
@@ -30,18 +30,18 @@ export default function FeaturedCertificates() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {certificates.slice(0, 3).map((cert, index) => (
-            <motion.div
+            <m.div
               key={cert.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <CertificateCard certificate={cert} index={index} />
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
-        <motion.div 
+        <m.div 
           className="flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +53,7 @@ export default function FeaturedCertificates() {
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </ShinyButton>
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

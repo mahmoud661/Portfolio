@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { LucideIcon } from "lucide-react";
 
 interface TimelineItemProps {
@@ -36,7 +36,7 @@ export default function TimelineItem({
         } grid-cols-1`}
       >
         {/* Card */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, x: isEven ? -50 : 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -74,10 +74,10 @@ export default function TimelineItem({
               ))}
             </div>
           )}
-        </motion.div>
+        </m.div>
 
         {/* Timeline Node */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -87,7 +87,7 @@ export default function TimelineItem({
           <div className="px-4 py-1 rounded-full bg-primary text-primary-foreground text-sm font-medium">
             {period}
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Empty Space */}
         <div className="hidden md:block" />

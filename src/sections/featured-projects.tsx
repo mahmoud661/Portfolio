@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { projects } from "@/data/projects";
@@ -22,18 +22,18 @@ export default function FeaturedProjects() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {projects.slice(0, 2).map((project, index) => (
-            <motion.div
+            <m.div
               key={project.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <ProjectCard project={project} index={index} />
-            </motion.div>
+            </m.div>
           ))}
         </div>
 
-        <motion.div 
+        <m.div 
           className="flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -45,7 +45,7 @@ export default function FeaturedProjects() {
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
             </ShinyButton>
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

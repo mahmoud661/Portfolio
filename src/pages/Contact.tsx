@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 import Particles from "@/components/ui/particles";
@@ -11,7 +11,7 @@ export default function Contact() {
         ease={80}
         refresh
       />
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -27,7 +27,7 @@ export default function Contact() {
           <ContactInfo />
           <ContactForm />
         </div>
-      </motion.div>
+      </m.div>
     </main>
   );
 }

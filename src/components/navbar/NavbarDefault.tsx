@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import ThemeToggle from "../ui/theme-toggle";
+import { AnimatedThemeToggler } from "../ui/animated-theme-toggler";
 import MobileMenu from "./mobile-menu";
 import CV from "../../assets/Mahmoud Zreiqi -CV.pdf";
 
@@ -22,7 +22,7 @@ const handleDownload = async () => {
 function NavbarDefault({ className = "" }: { className?: string }) {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
@@ -37,7 +37,7 @@ function NavbarDefault({ className = "" }: { className?: string }) {
 
   return (
     <>
-      <motion.nav
+      <m.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-10 pt-5 pb-2 bg-background border-b border-border ${className}`}
@@ -46,10 +46,10 @@ function NavbarDefault({ className = "" }: { className?: string }) {
           <Link to="/" className="text-xl text-foreground font-semibold">
             MZ
           </Link>
-          
+
           <div className="flex items-center gap-2 md:hidden">
-            <ThemeToggle />
-            <button 
+            <AnimatedThemeToggler />
+            <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="p-2 hover:bg-secondary rounded-lg transition-colors"
               aria-label="Open menu"
@@ -70,7 +70,7 @@ function NavbarDefault({ className = "" }: { className?: string }) {
               >
                 {item.label}
                 {isActive(item.path) && (
-                  <motion.div
+                  <m.div
                     layoutId="navbar-indicator"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
                     initial={false}
@@ -85,7 +85,7 @@ function NavbarDefault({ className = "" }: { className?: string }) {
             </li>
           ))}
           <li className="hidden md:block">
-            <ThemeToggle />
+            <AnimatedThemeToggler />
           </li>
         </ul>
 
@@ -97,9 +97,9 @@ function NavbarDefault({ className = "" }: { className?: string }) {
             Resume
           </button>
         </div>
-      </motion.nav>
+      </m.nav>
 
-      <MobileMenu 
+      <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />

@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Mail, Phone, MapPin, Github, Linkedin} from "lucide-react";
 
 export default function ContactInfo() {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
@@ -49,6 +49,6 @@ export default function ContactInfo() {
           <Linkedin size={24} />
         </a>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import CertificateCard from "@/components/certificate/CertificateCard";
 import { certificates } from "@/data/certificates";
 import Particles from "@/components/ui/particles";
@@ -11,7 +11,7 @@ export default function Certificates() {
         ease={80}
         refresh
       />
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -29,7 +29,7 @@ export default function Certificates() {
             <CertificateCard key={index} certificate={cert} index={index} />
           ))}
         </div>
-      </motion.div>
+      </m.div>
     </main>
   );
 }

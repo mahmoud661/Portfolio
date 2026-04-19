@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import ShinyButton from "@/components/ui/shiny-button";
 
 export default function ContactForm() {
   return (
-    <motion.form
+    <m.form
       initial={{ opacity: 0, x: 20 }}
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
@@ -41,6 +41,6 @@ export default function ContactForm() {
         ></textarea>
       </div>
       <ShinyButton className="w-full">Send Message</ShinyButton>
-    </motion.form>
+    </m.form>
   );
 }

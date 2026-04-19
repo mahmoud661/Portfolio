@@ -1,7 +1,6 @@
 import { memo, useState } from "react";
 import { Project } from "@/types";
 import { Dialog } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
 import { Github, ExternalLink, Play } from "lucide-react";
 // Removed ScaleIn to reduce nested animations
 
@@ -13,18 +12,13 @@ interface ProjectDialogProps {
 
 function ProjectDialog({ project, isOpen, onClose }: ProjectDialogProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const isVideo = project.media?.type === 'video';
+  const isVideo = project.media?.type === "video";
 
   return (
     <Dialog isOpen={isOpen} onClose={onClose} size="xl">
-      <div className="p-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          className="relative"
-        >
-          <div className="aspect-video bg-secondary rounded-xl overflow-hidden mb-6 group bg-black">
+      <div className="p-6 max-h-[85vh] overflow-y-auto overflow-x-hidden">
+        <div className="relative">
+          <div className="aspect-video bg-secondary rounded-xl overflow-hidden mb-6 group bg-black shrink-0">
             {isVideo ? (
               isPlaying ? (
                 <video
@@ -41,7 +35,7 @@ function ProjectDialog({ project, isOpen, onClose }: ProjectDialogProps) {
                     src={project.image}
                     alt={project.title}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                   />
                   <button
                     aria-label="Play video"
@@ -57,27 +51,27 @@ function ProjectDialog({ project, isOpen, onClose }: ProjectDialogProps) {
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover"
-                loading="lazy"
+                loading="eager"
               />
             )}
           </div>
 
-          {/* ...existing motion.div content with project details... */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.3 }}
-            className="space-y-6"
-          >
+          {/* ...existing m.div content with project details... */}
+          <div className="space-y-6">
             <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">{project.title}</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                {project.title}
+              </h2>
               <p className="text-muted-foreground text-base md:text-lg">
                 {project.description}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech, i) => (
-                <span key={i} className="px-3 py-1 text-sm bg-secondary rounded-full">
+                <span
+                  key={i}
+                  className="px-3 py-1 text-sm bg-secondary rounded-full"
+                >
                   {tech}
                 </span>
               ))}
@@ -127,8 +121,8 @@ function ProjectDialog({ project, isOpen, onClose }: ProjectDialogProps) {
                 </div>
               )}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </Dialog>
   );

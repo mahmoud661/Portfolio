@@ -1,11 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  motion,
-  type AnimationProps,
-  type HTMLMotionProps,
-} from "framer-motion";
+import { m, type AnimationProps, type HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const animationProps = {
@@ -37,7 +33,7 @@ interface ShinyButtonProps extends HTMLMotionProps<"button"> {
 const ShinyButton = React.forwardRef<HTMLButtonElement, ShinyButtonProps>(
   ({ children, className, ...props }, ref) => {
     return (
-      <motion.button
+      <m.button
         ref={ref}
         {...animationProps}
         {...props}
@@ -62,7 +58,7 @@ const ShinyButton = React.forwardRef<HTMLButtonElement, ShinyButtonProps>(
           }}
           className="absolute inset-0 z-10 block rounded-[inherit] bg-[linear-gradient(-75deg,hsl(var(--primary)/10%)_calc(var(--x)+20%),hsl(var(--primary)/50%)_calc(var(--x)+25%),hsl(var(--primary)/10%)_calc(var(--x)+100%))] p-px"
         ></span>
-      </motion.button>
+      </m.button>
     );
   },
 );

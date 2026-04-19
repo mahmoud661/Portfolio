@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { AnimatePresence, m, Variants } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -96,13 +96,13 @@ export default function HyperText({
     >
       <AnimatePresence>
         {displayText.map((letter, i) => (
-          <motion.h1
+          <m.h1
             key={i}
             className={cn("font-mono", letter === " " ? "w-3" : "", className)}
             {...framerProps}
           >
             {letter?.toUpperCase()}
-          </motion.h1>
+          </m.h1>
         ))}
       </AnimatePresence>
     </div>
