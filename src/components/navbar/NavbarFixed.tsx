@@ -82,12 +82,12 @@ function NavbarFixed({ visible }: { visible: boolean }) {
           </button>
         </div>
 
-        <ul className="hidden md:flex items-center gap-2 text-sm font-medium font-jakarta">
+        <ul className="hidden md:flex items-center gap-1 text-sm font-medium font-jakarta">
           {navItems.map((item) => (
             <li key={item.path} className="group">
               <Link
                 to={item.path}
-                className={`relative p-4 block transition-all ${
+                className={`relative px-4 py-3 block transition-all ${
                   isActive(item.path)
                     ? "text-foreground"
                     : "text-muted-foreground hover:text-foreground"
@@ -97,7 +97,7 @@ function NavbarFixed({ visible }: { visible: boolean }) {
                 {isActive(item.path) && (
                   <m.div
                     layoutId="navbar-fixed-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground"
                     initial={false}
                     transition={{
                       type: "spring",
@@ -109,13 +109,11 @@ function NavbarFixed({ visible }: { visible: boolean }) {
               </Link>
             </li>
           ))}
-          <li>
+          <li className="flex items-center justify-center pl-3 pr-2 gap-3 h-full">
             <AnimatedThemeToggler />
-          </li>
-          <li>
             <button
               onClick={handleDownload}
-              className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground hover:bg-background hover:text-foreground border border-foreground transition-all duration-300"
+              className="font-jakarta text-sm px-5 py-2 rounded-full text-background font-medium bg-foreground hover:bg-background hover:text-foreground border border-foreground transition-all duration-300"
             >
               Resume
             </button>

@@ -40,9 +40,9 @@ function NavbarDefault({ className = "" }: { className?: string }) {
       <m.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`flex flex-col md:flex-row md:justify-between md:items-center px-4 md:px-10 pt-5 pb-2 bg-background border-b border-border ${className}`}
+        className={`flex flex-col md:flex-row md:items-center px-4 md:px-10 pt-5 pb-4 bg-background border-b border-border ${className}`}
       >
-        <div className="flex justify-between items-center mb-4 md:mb-0">
+        <div className="flex justify-between items-center w-full md:w-auto md:flex-1 mb-4 md:mb-0">
           <Link to="/" className="text-xl text-foreground font-semibold">
             MZ
           </Link>
@@ -59,12 +59,12 @@ function NavbarDefault({ className = "" }: { className?: string }) {
           </div>
         </div>
 
-        <ul className="hidden md:flex flex-col md:flex-row items-center gap-2 text-muted-foreground font-medium font-jakarta">
+        <ul className="hidden md:flex md:flex-none items-center justify-center gap-1 text-sm text-muted-foreground font-medium font-jakarta">
           {navItems.map((item) => (
             <li key={item.path}>
               <Link
                 to={item.path}
-                className={`relative p-3 block transition-colors hover:text-foreground ${
+                className={`relative px-4 py-2 block transition-colors hover:text-foreground ${
                   isActive(item.path) ? "text-foreground" : ""
                 }`}
               >
@@ -72,7 +72,7 @@ function NavbarDefault({ className = "" }: { className?: string }) {
                 {isActive(item.path) && (
                   <m.div
                     layoutId="navbar-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-foreground"
                     initial={false}
                     transition={{
                       type: "spring",
@@ -84,15 +84,13 @@ function NavbarDefault({ className = "" }: { className?: string }) {
               </Link>
             </li>
           ))}
-          <li className="hidden md:block">
-            <AnimatedThemeToggler />
-          </li>
         </ul>
 
-        <div className="hidden md:block">
+        <div className="hidden md:flex md:flex-1 items-center justify-end gap-3">
+          <AnimatedThemeToggler />
           <button
             onClick={handleDownload}
-            className="font-jakarta text-sm px-4 py-2 rounded-full text-background font-medium bg-foreground border border-foreground hover:bg-background hover:text-foreground transition-colors"
+            className="font-jakarta text-sm px-5 py-2 rounded-full text-background font-medium bg-foreground border border-foreground hover:bg-background hover:text-foreground transition-colors"
           >
             Resume
           </button>
