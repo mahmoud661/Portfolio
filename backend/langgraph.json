@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "example_agent": "./example_agent.py:graph"
+  },
+  "env": ".env",
+  "python_version": "3.11",
+  "python_path": ".."
+}

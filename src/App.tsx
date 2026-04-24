@@ -1,7 +1,13 @@
 import { useState, useEffect, lazy, Suspense, memo } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./components/navbar/navbar";
 import LoadingScreen from "./components/loading/loading-screen";
+import AIChatbot from "./components/ai/AIChatbot";
 
 // Lazy load pages
 const Home = lazy(() => import("./pages/Home"));
@@ -40,7 +46,8 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="bg-background text-foreground min-h-screen">
+      <AIChatbot />
+      <div className="min-h-screen bg-background text-foreground">
         {isLoading ? (
           <LoadingScreen
             onLoaded={() => setIsLoading(false)}
@@ -49,7 +56,11 @@ function App() {
         ) : (
           <>
             <Navbar />
-            <Suspense fallback={<LoadingScreen onLoaded={() => {}} isPageReady={false} />}>
+            <Suspense
+              fallback={
+                <LoadingScreen onLoaded={() => {}} isPageReady={false} />
+              }
+            >
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
