@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
+import { AnimatePresence, m } from "framer-motion";
 import { cn } from "../../lib/utils";
 import { useAIChat } from "./useAIChat";
 import { ChatMessages } from "./ChatMessages";
+import { TourProgress } from "./TourProgress";
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { messages, isTyping, sendMessage } = useAIChat();
+  const { messages, isTyping, sendMessage, tourSteps } = useAIChat();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +51,8 @@ export default function AIChatbot() {
             : "scale-95 opacity-0 h-0 pointer-events-none",
         )}
       >
-        <div className="flex items-center justify-between p-4 bg-primary text-primary-foreground">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 bg-primary text-primary-foreground shrink-0">
           <div>
             <h3 className="text-lg font-semibold">Portfolio AI Tour</h3>
             <p className="text-xs opacity-90">Ask me to show you around!</p>
@@ -64,15 +67,35 @@ export default function AIChatbot() {
           </button>
         </div>
 
+        {/* Tour progress — slides in when a tour is active */}
+        <AnimatePresence initial={false}>
+          {tourSteps.length > 0 && (
+            <m.div
+              key="tour"
+              initial={{ height: 0 }}
+              animate={{ height: "auto" }}
+              exit={{ height: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="shrink-0 overflow-hidden"
+            >
+              <TourProgress steps={tourSteps} />
+            </m.div>
+          )}
+        </AnimatePresence>
+
+        {/* Messages */}
         <ChatMessages
           messages={messages}
           isTyping={isTyping}
+          onContinue={() => sendMessage("Please continue from where you left off.")}
+          onStop={() => sendMessage("Please stop and wait for my next message.")}
           messagesEndRef={messagesEndRef}
         />
 
+        {/* Input */}
         <form
           onSubmit={handleSubmit}
-          className="p-4 border-t border-border bg-card"
+          className="p-4 border-t border-border bg-card shrink-0"
         >
           <div className="relative flex items-center">
             <input

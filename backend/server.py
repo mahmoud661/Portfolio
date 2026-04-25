@@ -4,11 +4,15 @@ import uvicorn
 import socketio
 from fastapi import FastAPI
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage
 from langchain_core.runnables.config import RunnableConfig
 from langgraph.checkpoint.memory import MemorySaver
 import json
 from graph import create_react_agent
+from middlewares.tour_middleware import TourMiddleware, TourState, manage_tour
+from middlewares.recursion_guard_middleware import RecursionGuardMiddleware
+from middlewares.subagent_middleware import SubAgentMiddleware
+from langgraph.errors import GraphRecursionError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -58,6 +62,70 @@ async def inspect_react_dom(config: RunnableConfig) -> str:
 
 
 @tool
+async def get_site_structure(config: RunnableConfig) -> str:
+    """
+    Get the complete content and structure of this portfolio website from the frontend.
+    Returns a detailed description of every page: sections, all project names and
+    descriptions, certificates, skills, scroll requirements, and interaction notes.
+    Call this before plan_tour to get accurate, up-to-date site content.
+    """
+    sid = config.get("configurable", {}).get("sid")
+    if not sid:
+        return "Error: Could not determine user session."
+    try:
+        result = await sio.call("request_site_structure", timeout=10, to=sid)
+        return result if isinstance(result, str) else str(result)
+    except socketio.exceptions.TimeoutError:
+        return "Error: Frontend did not respond in time."
+
+
+@tool
+async def scroll_page(position: int, config: RunnableConfig) -> str:
+    """
+    Scroll the user's page to a specific pixel position from the top.
+    Use the pixel values from inspect_react_dom or the site structure's
+    Live Element Positions section to know where to scroll.
+
+    Args:
+        position: pixel distance from the page top to scroll to (e.g. 820 for ~820px down)
+    """
+    sid = config.get("configurable", {}).get("sid")
+    if not sid:
+        return "Error: Could not determine user session."
+    await sio.emit("scroll_page", {"position": position}, to=sid)
+    return f"Scrolled page to {position}px from top."
+
+
+@tool
+async def spotlight_element(selector: str, label: str, config: RunnableConfig) -> str:
+    """
+    Highlight a specific element on the user's screen with a pulsing ring and a
+    floating label badge. Auto-dismissed after 5 seconds or on user interaction.
+
+    Use the selectors listed in get_site_structure — do NOT use inspect_react_dom
+    ref IDs for this tool.
+
+    Two selector formats are supported:
+    1. Standard CSS:  "section.space-y-24"  or  "div.rounded-xl.bg-card.cursor-pointer"
+    2. Text search:   "text:h3:Schema Forge"  →  finds the first <h3> whose text
+                      contains "Schema Forge". Use this to target specific project cards,
+                      certificate cards, or any named element.
+
+    Args:
+        selector: CSS selector or "text:TAG:content" string from the site structure guide
+        label:    short description shown in the floating badge
+    """
+    sid = config.get("configurable", {}).get("sid")
+    if not sid:
+        return "Error: Could not determine user session."
+    try:
+        await sio.call("spotlight", {"selector": selector, "label": label}, timeout=8, to=sid)
+    except socketio.exceptions.TimeoutError:
+        pass  # spotlight still ran; just no callback received
+    return f"Spotlight held on '{label}' for 5 seconds. The user has seen the element."
+
+
+@tool
 async def execute_react_dom_action(
     config: RunnableConfig, ref_id: int, action: str, arguments: str = ""
 ) -> str:
@@ -88,14 +156,84 @@ async def execute_react_dom_action(
 # Checkpointer for session memory
 memory = MemorySaver()
 
-# System prompt outlining the persona and response format
-SYSTEM_PROMPT = """You are an interactive AI guide controlling this portfolio website.
-Your job is to give the user a tour of the portfolio, explain the projects, and show off the capabilities.
-You can use special markdown tags to tell the frontend to perform actions. 
-To perform an action, include a `<call_to_action label="ACTION_NAME" />` tag in your response. 
-The frontend will parse this tag and perform the corresponding action (e.g., opening a specific section, showing a project, etc.).
-Keep your responses conversational, engaging, and relatively concise.
-Use the `inspect_react_dom` tool to look at the user's screen whenever you need context about what page they are on or what content they are viewing."""
+# ── Tour planner subagent ──────────────────────────────────────────────────────
+
+TOUR_PLANNER_SYSTEM_PROMPT = """You are a tour planner for a developer portfolio website.
+
+When you receive a tour planning request, follow these steps exactly:
+
+1. Call get_site_structure to fetch complete live site content and DOM positions.
+   The result has two sections:
+   - Static content: every page's sections, all project names/descriptions, certificates,
+     skills (24 tags), career timeline, and contact details.
+   - Live Element Positions: which headings are in the viewport vs how many pixels
+     from page top (use these numbers for the scroll field below).
+
+2. Based on the site data and the request, decide the tour steps.
+
+3. Call manage_tour with ALL steps set to status "pending" to write the plan into
+   shared state. The main agent will read these steps and execute them.
+   - title: concise step name, e.g. "Home — Hero", "About — Skills Cloud", "Projects — Schema Forge"
+   - description: one sentence on what to show/say at this stop — use REAL names
+     (actual project titles, certificate names, skill names from the data)
+   - status: "pending" for every step — the main agent manages in_progress/completed
+
+4. Return a short confirmation listing the step titles you planned.
+
+Rules for the plan:
+- action hint in description: mention the navigate_* label and any scroll distance
+  from Live Positions (e.g. "navigate_about, scroll ~820px to skills cloud")
+- 4–8 steps for a full tour; 2–4 for a focused request
+- Every step must reference specific real content, not generic placeholders"""
+
+tour_planner_subagent = {
+    "name": "tour-planner",
+    "description": (
+        "Plans a detailed portfolio tour. Reads the live site structure, then calls "
+        "manage_tour to write the full step list (all 'pending') directly into shared "
+        "state so the main agent can execute them immediately."
+    ),
+    "system_prompt": TOUR_PLANNER_SYSTEM_PROMPT,
+    "tools": [get_site_structure, manage_tour],
+    "state_schema": TourState,
+}
+
+# ── Main agent prompts ────────────────────────────────────────────────────────
+
+SYSTEM_PROMPT = """You are an interactive AI guide for this developer portfolio website.
+
+## Starting a Tour
+When the user asks for ANY tour, walkthrough, or demo:
+1. Call task(description="Plan a tour: <user request>", subagent_type="tour-planner").
+   The tour-planner fetches live site data, builds the step list, and writes it directly
+   into shared state via manage_tour — you do NOT need to call manage_tour yourself to set up steps.
+2. After task() returns, the tour_steps are already in state (all "pending").
+   The tour context is now auto-injected into your system prompt by TourMiddleware.
+3. Begin executing immediately from the first pending step.
+
+## Executing Each Step
+For every pending/in_progress step, follow this exact sequence:
+  a. manage_tour → mark this step "in_progress" (keep others as-is)
+  b. trigger_ui_action → navigate to the correct page (hint is in the step description)
+  c. inspect_react_dom → get a fresh element snapshot with current positions
+  d. If the target element requires scrolling, call scroll_page(position) first
+     using the pixel value from inspect_react_dom or the step description
+  e. spotlight_element → highlight the key element (match focus hint to a ref_id)
+  f. Speak to the user — use real content names from the step description
+  g. manage_tour → mark this step "completed", next step "in_progress"
+  h. Move to the next step immediately
+
+## Spotlight Rules
+- Use selectors from the "Spotlight Selectors" section of get_site_structure output
+- For specific named items: "text:h3:Schema Forge", "text:h3:DevPath", "text:h3:Machine Learning"
+- For sections/containers: "section.space-y-24", "div.flex.flex-col.mb-60", "form"
+- No need to call inspect_react_dom before spotlight_element
+- Use specific badge labels: "Schema Forge — AI database designer", "Skills cloud"
+
+## General
+- Use real names — never "a project", always "Schema Forge" or "DevPath"
+- Keep narration conversational, enthusiastic, and concise
+- If the user asks a question mid-tour, answer it fully, then resume"""
 
 # Initialize the model
 model = ChatOpenAI(
@@ -111,8 +249,19 @@ agent_graph = create_react_agent(
         trigger_ui_action,
         inspect_react_dom,
         execute_react_dom_action,
-    ],  # Tool helps structural reasoning
+        scroll_page,
+        spotlight_element,
+    ],
     system_prompt=SYSTEM_PROMPT,
+    middleware=[
+        SubAgentMiddleware(
+            default_model=model,
+            subagents=[tour_planner_subagent],
+            general_purpose_agent=False,
+        ),
+        TourMiddleware(),
+        RecursionGuardMiddleware(step_limit=40),
+    ],
     checkpointer=memory,
 )
 
@@ -141,22 +290,51 @@ async def handle_message(sid, data):
         token = str(uuid.uuid4())
         await sio.emit("token", {"token": token}, to=sid)
 
-    config = {"configurable": {"thread_id": token, "sid": sid}}
+    config = {
+        "configurable": {"thread_id": token, "sid": sid},
+        "recursion_limit": 100,
+    }
 
-    # Stream the response from the agent
-    async for event in agent_graph.astream_events(
-        {"messages": [HumanMessage(content=user_message)]}, config=config, version="v2"
-    ):
-        event_type = event["event"]
+    try:
+        async for event in agent_graph.astream_events(
+            {"messages": [HumanMessage(content=user_message)]}, config=config, version="v2"
+        ):
+            event_type = event["event"]
 
-        # Stream model tokens as they get generated
-        if event_type == "on_chat_model_stream":
-            chunk = event["data"]["chunk"]
-            if chunk.content:
-                await sio.emit("chunk", {"content": chunk.content}, to=sid)
+            if event_type == "on_chat_model_stream":
+                chunk = event["data"]["chunk"]
+                if chunk.content:
+                    await sio.emit("chunk", {"content": chunk.content}, to=sid)
 
-    # Notify that the stream is complete
-    await sio.emit("message_complete", {}, to=sid)
+            elif event_type == "on_tool_start":
+                tool_name = event.get("name", "")
+                tool_input = event["data"].get("input", {})
+                await sio.emit("tool_call", {"tool": tool_name, "input": tool_input}, to=sid)
+                if tool_name == "manage_tour" and "tour_steps" in tool_input:
+                    await sio.emit("tour_update", {"steps": tool_input["tour_steps"]}, to=sid)
+
+            elif event_type == "on_chain_stream":
+                chunk = event["data"].get("chunk", {})
+                if isinstance(chunk, dict) and "__interrupt__" in chunk:
+                    for intr in chunk["__interrupt__"]:
+                        val = intr.value if hasattr(intr, "value") else {}
+                        msg = (
+                            val.get("message", "The agent paused and needs your guidance.")
+                            if isinstance(val, dict)
+                            else str(val)
+                        )
+                        await sio.emit("agent_interrupt", {"message": msg}, to=sid)
+
+    except GraphRecursionError:
+        await sio.emit("agent_error", {
+            "message": (
+                "The agent hit its step limit without finishing. "
+                "Please try a simpler request or ask me to restart the tour."
+            )
+        }, to=sid)
+
+    finally:
+        await sio.emit("message_complete", {}, to=sid)
 
 
 if __name__ == "__main__":

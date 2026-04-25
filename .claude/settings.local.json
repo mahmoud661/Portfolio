@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"from langchain.agents.middleware.types import AgentState; import inspect; print\\(inspect.getsource\\(AgentState\\)\\)\")",
+      "Bash(node -e \"require\\('remark-gfm'\\); console.log\\('remark-gfm available'\\)\")",
+      "Bash(node -e \"require\\('rehype-raw'\\); console.log\\('rehype-raw available'\\)\")"
+    ]
+  }
+}

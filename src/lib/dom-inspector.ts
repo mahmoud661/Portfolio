@@ -84,6 +84,11 @@ export function inspectDOM() {
   };
 }
 
+/** Return an element by its ref ID from the most recent inspectDOM() call. */
+export function getElementByRef(refId: number): HTMLElement | null {
+  return elementMap.get(refId) ?? null;
+}
+
 export function executeDOMAction(
   refId: number,
   action: "click" | "fill",
