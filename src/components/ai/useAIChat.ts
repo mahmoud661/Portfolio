@@ -95,21 +95,84 @@ function findElementBySelector(selector: string): HTMLElement | null {
   return null;
 }
 
+/** Recreate the AIAvatar look as a plain DOM element (no React needed). */
+function createAvatarDOM(ringColor: string): HTMLElement {
+  const root = document.createElement("div");
+  Object.assign(root.style, {
+    position:        "relative",
+    display:         "flex",
+    width:           "36px",
+    height:          "36px",
+    flexShrink:      "0",
+    alignItems:      "center",
+    justifyContent:  "center",
+    overflow:        "hidden",
+    borderRadius:    "10px",
+    background:      `linear-gradient(135deg, ${ringColor}, ${ringColor.replace(")", " / 0.55)").replace("hsl(", "hsl(")})`,
+    boxShadow:       "0 2px 10px rgba(0,0,0,0.4)",
+  });
+
+  // Radial glow overlay
+  const glow = document.createElement("div");
+  Object.assign(glow.style, {
+    position:   "absolute",
+    inset:      "0",
+    background: "radial-gradient(circle at 50% 0%, rgba(255,255,255,0.28), transparent 68%)",
+  });
+
+  // Eyes
+  const eyeWrap = document.createElement("div");
+  Object.assign(eyeWrap.style, {
+    position: "relative",
+    zIndex:   "10",
+    display:  "flex",
+    gap:      "4px",
+  });
+  for (let i = 0; i < 2; i++) {
+    const eye = document.createElement("div");
+    Object.assign(eye.style, {
+      height:       "10px",
+      width:        "6px",
+      borderRadius: "9999px",
+      background:   "rgba(255,255,255,0.9)",
+      boxShadow:    "0 0 3px rgba(255,255,255,0.5)",
+    });
+    eyeWrap.appendChild(eye);
+  }
+
+  root.appendChild(glow);
+  root.appendChild(eyeWrap);
+  return root;
+}
+
+/** Stream words into a text container one by one, completing by `byMs`. */
+function streamWords(textEl: HTMLElement, text: string, byMs: number): () => void {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (!words.length) return () => {};
+  const delay = Math.min(120, byMs / words.length);
+  let i = 0;
+  const id = setInterval(() => {
+    if (i < words.length) {
+      textEl.textContent = words.slice(0, ++i).join(" ");
+    } else {
+      clearInterval(id);
+    }
+  }, delay);
+  return () => clearInterval(id);
+}
+
 /**
  * Show a spotlight for exactly 5 seconds, then call onDone.
- *
- * Design: a "lens" div sits at the element's position. Its enormous box-shadow
- * darkens the entire page except for the lens area, creating a proper spotlight
- * cutout. A rAF loop keeps it locked to the element even if the page scrolls.
- * No element styles are modified — everything is done with separate overlay divs.
+ * - Lens + box-shadow creates a full-page dark overlay with a cutout over the element.
+ * - rAF loop keeps the lens locked to the element through scroll.
+ * - Caption (if provided) appears at the bottom with an avatar and streams word-by-word.
  */
-function applySpotlight(el: HTMLElement, label: string, onDone: () => void): void {
+function applySpotlight(el: HTMLElement, _label: string, caption: string, onDone: () => void): void {
   const PADDING  = 14;
   const DURATION = 5000;
 
   el.scrollIntoView({ behavior: "smooth", block: "center" });
 
-  // Hide the chatbot panel so it doesn't overlap the spotlight
   const chatbotPanel = document.getElementById("ai-chatbot-container");
   if (chatbotPanel) {
     chatbotPanel.style.opacity       = "0";
@@ -121,7 +184,7 @@ function applySpotlight(el: HTMLElement, label: string, onDone: () => void): voi
   const ringColor = `hsl(${primary})`;
   const glowColor = `hsl(${primary} / 0.45)`;
 
-  // Lens — transparent rect that "cuts out" a hole in the page-wide shadow
+  // ── Lens ──────────────────────────────────────────────────────────────────
   const lens = document.createElement("div");
   Object.assign(lens.style, {
     position:      "fixed",
@@ -130,76 +193,96 @@ function applySpotlight(el: HTMLElement, label: string, onDone: () => void): voi
     pointerEvents: "none",
     border:        `2px solid ${ringColor}`,
     background:    "transparent",
-    // Huge shadow darkens everything outside the lens; inner glow highlights the edges
-    boxShadow:     `0 0 0 9999px rgba(0,0,0,0.62), 0 0 32px 6px ${glowColor}`,
+    boxShadow:     `0 0 0 9999px rgba(0,0,0,0.65), 0 0 32px 6px ${glowColor}`,
     opacity:       "0",
     transition:    "opacity 0.35s ease",
   });
 
-  // Badge — always dark background + white text so it's legible in any theme
-  const badge = document.createElement("div");
-  Object.assign(badge.style, {
-    position:      "fixed",
-    zIndex:        "9999",
-    pointerEvents: "none",
-    background:    "rgba(15, 15, 15, 0.92)",
-    color:         "white",
-    fontSize:      "12px",
-    fontWeight:    "700",
-    letterSpacing: "0.02em",
-    padding:       "6px 14px",
-    borderRadius:  "9999px",
-    whiteSpace:    "nowrap",
-    border:        `1px solid ${ringColor}`,
-    boxShadow:     `0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px ${glowColor}`,
-    opacity:       "0",
-    transition:    "opacity 0.35s ease",
-  });
-  badge.textContent = label;
+
+  // ── Caption (avatar + streaming text) ─────────────────────────────────
+  let captionWrap: HTMLDivElement | null = null;
+  let captionText: HTMLDivElement | null = null;
+  let stopStream = () => {};
+
+  if (caption) {
+    captionWrap = document.createElement("div");
+    Object.assign(captionWrap.style, {
+      position:      "fixed",
+      bottom:        "32px",
+      left:          "50%",
+      transform:     "translateX(-50%)",
+      zIndex:        "9999",
+      maxWidth:      "560px",
+      width:         "calc(100% - 48px)",
+      background:    "rgba(10,10,10,0.92)",
+      borderRadius:  "16px",
+      border:        `1px solid ${ringColor}`,
+      boxShadow:     `0 6px 28px rgba(0,0,0,0.55), 0 0 0 1px ${glowColor}`,
+      display:       "flex",
+      alignItems:    "flex-start",
+      gap:           "12px",
+      padding:       "14px 16px",
+      opacity:       "0",
+      transition:    "opacity 0.4s ease",
+      pointerEvents: "none",
+    });
+
+    captionWrap.appendChild(createAvatarDOM(ringColor));
+
+    captionText = document.createElement("div");
+    Object.assign(captionText.style, {
+      color:      "white",
+      fontSize:   "14px",
+      lineHeight: "1.65",
+      flex:       "1",
+      minWidth:   "0",
+    });
+    captionText.textContent = "";
+    captionWrap.appendChild(captionText);
+    document.body.appendChild(captionWrap);
+  }
 
   document.body.appendChild(lens);
-  document.body.appendChild(badge);
 
-  // rAF loop — tracks the element every frame so the spotlight stays locked
-  // even if smooth-scroll is still animating or the user scrolls manually
+  // ── rAF tracking loop ─────────────────────────────────────────────────
   let tracking = true;
   function syncPositions() {
     if (!tracking) return;
-    const r  = el.getBoundingClientRect();
-    const bh = badge.offsetHeight || 30;
-    const bw = badge.offsetWidth  || 100;
-
-    lens.style.top    = `${r.top  - PADDING}px`;
-    lens.style.left   = `${r.left - PADDING}px`;
+    const r = el.getBoundingClientRect();
+    lens.style.top    = `${r.top    - PADDING}px`;
+    lens.style.left   = `${r.left   - PADDING}px`;
     lens.style.width  = `${r.width  + PADDING * 2}px`;
     lens.style.height = `${r.height + PADDING * 2}px`;
-
-    const belowY = r.bottom + PADDING + 8;
-    const aboveY = r.top    - PADDING - bh - 8;
-    badge.style.top  = `${belowY + bh < window.innerHeight - 8 ? belowY : aboveY}px`;
-    badge.style.left = `${Math.max(8, Math.min(r.left + r.width / 2 - bw / 2, window.innerWidth - bw - 8))}px`;
-
     requestAnimationFrame(syncPositions);
   }
 
-  // Two-frame render: position first, then fade in (avoids flash at 0,0)
+  // ── Fade-in sequence ──────────────────────────────────────────────────
   requestAnimationFrame(() => {
     syncPositions();
     requestAnimationFrame(() => {
-      lens.style.opacity  = "1";
-      badge.style.opacity = "1";
+      lens.style.opacity = "1";
+      if (captionWrap && captionText) {
+        // Caption appears 400 ms after lens; streaming starts 200 ms after that
+        setTimeout(() => {
+          captionWrap!.style.opacity = "1";
+          setTimeout(() => {
+            // Stream words across ~70% of remaining time so there's reading time at the end
+            stopStream = streamWords(captionText!, caption, DURATION * 0.65);
+          }, 200);
+        }, 400);
+      }
     });
   });
 
-  // After DURATION: fade out, clean up DOM, call onDone to unblock the agent
+  // ── Auto-dismiss after DURATION ───────────────────────────────────────
   setTimeout(() => {
     tracking = false;
-    lens.style.opacity  = "0";
-    badge.style.opacity = "0";
+    stopStream();
+    lens.style.opacity = "0";
+    if (captionWrap) captionWrap.style.opacity = "0";
     setTimeout(() => {
       lens.parentNode?.removeChild(lens);
-      badge.parentNode?.removeChild(badge);
-      // Restore the chatbot panel
+      captionWrap?.parentNode?.removeChild(captionWrap);
       if (chatbotPanel) {
         chatbotPanel.style.opacity       = "";
         chatbotPanel.style.pointerEvents = "";
@@ -321,14 +404,17 @@ export function useAIChat() {
     // Highlight a specific DOM element — holds for 5 s then ACKs the backend
     socket.on(
       "spotlight",
-      (data: { selector: string; label: string }, callback?: () => void) => {
+      (
+        data: { selector: string; label: string; caption?: string },
+        callback?: () => void,
+      ) => {
         const el = findElementBySelector(data.selector);
         if (!el) {
           console.warn(`Spotlight: no element found for "${data.selector}"`);
           if (typeof callback === "function") callback();
           return;
         }
-        applySpotlight(el, data.label, () => {
+        applySpotlight(el, data.label, data.caption ?? "", () => {
           if (typeof callback === "function") callback();
         });
       },

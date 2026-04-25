@@ -13,11 +13,11 @@ from middlewares.tour_middleware import TourMiddleware, TourState, manage_tour
 from middlewares.recursion_guard_middleware import RecursionGuardMiddleware
 from middlewares.subagent_middleware import SubAgentMiddleware
 from langgraph.errors import GraphRecursionError
+from langgraph.types import Command
+from langchain_core.tools import tool
 from dotenv import load_dotenv
 
 load_dotenv()
-
-from langchain_core.tools import tool
 
 # Initialize FastAPI and SocketIO
 app = FastAPI()
@@ -97,31 +97,42 @@ async def scroll_page(position: int, config: RunnableConfig) -> str:
 
 
 @tool
-async def spotlight_element(selector: str, label: str, config: RunnableConfig) -> str:
+async def spotlight_element(
+    selector: str,
+    label: str,
+    config: RunnableConfig,
+    talking_points: str = "",
+) -> str:
     """
-    Highlight a specific element on the user's screen with a pulsing ring and a
-    floating label badge. Auto-dismissed after 5 seconds or on user interaction.
+    Highlight a specific element on the user's screen for 5 seconds with a dark
+    overlay spotlight. A caption with your talking points appears at the bottom
+    of the screen while the spotlight is held. Blocks until the 5 seconds elapse.
 
-    Use the selectors listed in get_site_structure — do NOT use inspect_react_dom
-    ref IDs for this tool.
+    Use the selectors from the "Spotlight Selectors" section of get_site_structure.
 
-    Two selector formats are supported:
-    1. Standard CSS:  "section.space-y-24"  or  "div.rounded-xl.bg-card.cursor-pointer"
-    2. Text search:   "text:h3:Schema Forge"  →  finds the first <h3> whose text
-                      contains "Schema Forge". Use this to target specific project cards,
-                      certificate cards, or any named element.
+    Two selector formats:
+    1. Standard CSS:  "section.space-y-24"  or  "div.flex.flex-col.mb-60"
+    2. Text search:   "text:h3:Schema Forge"  →  first <h3> containing that text,
+                      automatically resolved to the nearest parent card container.
 
     Args:
-        selector: CSS selector or "text:TAG:content" string from the site structure guide
-        label:    short description shown in the floating badge
+        selector:       CSS selector or "text:TAG:content" string
+        label:          short badge label shown at the spotlight edge
+        talking_points: narration shown as a caption overlay during the spotlight
+                        (what you want to say about this element to the user)
     """
     sid = config.get("configurable", {}).get("sid")
     if not sid:
         return "Error: Could not determine user session."
     try:
-        await sio.call("spotlight", {"selector": selector, "label": label}, timeout=8, to=sid)
+        await sio.call(
+            "spotlight",
+            {"selector": selector, "label": label, "caption": talking_points},
+            timeout=8,
+            to=sid,
+        )
     except socketio.exceptions.TimeoutError:
-        pass  # spotlight still ran; just no callback received
+        pass
     return f"Spotlight held on '{label}' for 5 seconds. The user has seen the element."
 
 
@@ -267,13 +278,14 @@ agent_graph = create_react_agent(
 
 
 @sio.on("connect")
-async def connect(sid, environ):
+async def connect(sid, *_):
     print(f"Client connected: {sid}")
 
 
 @sio.on("disconnect")
 async def disconnect(sid):
     print(f"Client disconnected: {sid}")
+
 
 
 @sio.on("message")
@@ -295,13 +307,31 @@ async def handle_message(sid, data):
         "recursion_limit": 100,
     }
 
+    # If the graph is paused at an interrupt, resume it with Command(resume=...)
+    # instead of injecting a new user message — LangGraph requires this to
+    # replay to the interrupt point and let interrupt() return the resume value.
+    is_interrupted = False
+    if token:
+        try:
+            state = await agent_graph.aget_state(config)
+            is_interrupted = bool(state.interrupts)
+        except Exception:
+            pass
+
+    input_data = (
+        Command(resume=user_message)
+        if is_interrupted
+        else {"messages": [HumanMessage(content=user_message)]}
+    )
+
     try:
-        async for event in agent_graph.astream_events(
-            {"messages": [HumanMessage(content=user_message)]}, config=config, version="v2"
-        ):
+        async for event in agent_graph.astream_events(input_data, config=config, version="v2"):
             event_type = event["event"]
 
             if event_type == "on_chat_model_stream":
+                # Skip tokens from subagent internal LLM calls
+                if "no_stream" in event.get("tags", []):
+                    continue
                 chunk = event["data"]["chunk"]
                 if chunk.content:
                     await sio.emit("chunk", {"content": chunk.content}, to=sid)

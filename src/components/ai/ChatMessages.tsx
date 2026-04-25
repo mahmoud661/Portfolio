@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { m } from "framer-motion";
 import { cn } from "../../lib/utils";
+import { AIAvatar } from "./AIAvatar";
 import type { Message } from "./useAIChat";
 
 const ENTRY = {
@@ -17,7 +18,21 @@ const TOOL_ICONS: Record<string, string> = {
   execute_react_dom_action: "↗",
   manage_tour: "▸",
   write_todos: "✓",
+  get_site_structure: "◈",
+  plan_tour: "◆",
+  scroll_page: "↕",
+  spotlight_element: "◉",
 };
+
+// True if this AI message is the last one before the next user message (or end).
+// Only this message gets the avatar; prior AI messages in the same turn get a spacer.
+function isLastAIBeforeUser(messages: Message[], i: number): boolean {
+  for (let j = i + 1; j < messages.length; j++) {
+    if (messages[j].role === "user") return true;
+    if (messages[j].role === "ai") return false;
+  }
+  return true;
+}
 
 export function ChatMessages({
   messages,
@@ -48,24 +63,37 @@ export function ChatMessages({
       {messages.map((msg, i) => {
         const isLastAI = isStreaming && i === messages.length - 1;
 
+        /* ── Tool activity line ── */
         if (msg.role === "tool") {
           const icon = TOOL_ICONS[msg.toolName] ?? "·";
           return (
             <m.div
               key={i}
               {...ENTRY}
-              className="flex items-center gap-1.5 mr-auto py-0.5"
+              className="flex items-center gap-1.5 pl-10 py-0.5"
             >
-              <span className="text-[10px] text-primary/70 font-mono leading-none">
-                {icon}
-              </span>
-              <span className="text-xs text-muted-foreground/80 italic">
+              <span className="text-[10px] text-primary/60 font-mono">{icon}</span>
+              <span className="text-xs text-muted-foreground/70 italic">
                 {msg.content}
               </span>
             </m.div>
           );
         }
 
+        /* ── System notice ── */
+        if (msg.role === "system") {
+          return (
+            <m.div
+              key={i}
+              {...ENTRY}
+              className="w-full rounded-lg px-3 py-2 text-xs bg-muted/60 border border-border text-muted-foreground italic"
+            >
+              {msg.content}
+            </m.div>
+          );
+        }
+
+        /* ── Interrupt card ── */
         if (msg.role === "interrupt") {
           return (
             <m.div
@@ -99,61 +127,61 @@ export function ChatMessages({
           );
         }
 
-        if (msg.role === "system") {
-          return (
-            <m.div
-              key={i}
-              {...ENTRY}
-              className="w-full rounded-lg px-3 py-2 text-xs bg-muted/60 border border-border text-muted-foreground italic"
-            >
-              {msg.content}
-            </m.div>
-          );
-        }
-
+        /* ── User message ── */
         if (msg.role === "user") {
           return (
             <m.div
               key={i}
               {...ENTRY}
-              className="max-w-[85%] ml-auto rounded-2xl rounded-br-sm px-4 py-2 text-sm bg-primary text-primary-foreground"
+              className="max-w-[80%] ml-auto rounded-2xl rounded-br-sm px-4 py-2 text-sm bg-primary text-primary-foreground"
             >
               {msg.content}
             </m.div>
           );
         }
 
-        // AI message
+        /* ── AI message — no bubble, text on background ── */
+        const showAvatar = isLastAIBeforeUser(messages, i);
+
         return (
           <m.div
             key={i}
             {...ENTRY}
-            className={cn(
-              "max-w-[85%] mr-auto rounded-2xl rounded-bl-sm px-4 py-2 text-sm bg-muted text-foreground",
-              isLastAI && "pb-3",
-            )}
+            className="flex items-end gap-2.5 mr-auto max-w-[90%]"
           >
-            <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-pre:my-2 prose-code:text-xs">
-              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
-                {msg.content}
-              </ReactMarkdown>
-            </div>
-            {isLastAI && (
-              <span className="block mt-1 h-[2px] w-4 rounded-full bg-primary/40 animate-pulse" />
+            {/* Avatar on last AI of a turn, spacer on earlier ones */}
+            {showAvatar ? (
+              <div className="shrink-0">
+                <AIAvatar isThinking={isLastAI} />
+              </div>
+            ) : (
+              <div className="w-8 shrink-0" />
             )}
+
+            <div className={cn("text-sm text-foreground min-w-0", isLastAI && "pb-1")}>
+              <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-p:my-1 prose-headings:my-2 prose-li:my-0.5 prose-pre:my-2 prose-code:text-xs">
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                  {msg.content}
+                </ReactMarkdown>
+              </div>
+              {isLastAI && (
+                <span className="block mt-1 h-[2px] w-4 rounded-full bg-primary/40 animate-pulse" />
+              )}
+            </div>
           </m.div>
         );
       })}
 
+      {/* Typing dots — avatar in thinking state */}
       {showDots && (
-        <m.div
-          {...ENTRY}
-          className="bg-muted text-foreground mr-auto rounded-2xl rounded-bl-sm px-4 py-3 max-w-[85%]"
-        >
+        <m.div {...ENTRY} className="flex items-center gap-2.5 mr-auto">
+          <div className="shrink-0">
+            <AIAvatar isThinking />
+          </div>
           <div className="flex space-x-1 items-center h-4">
-            <div className="w-1.5 h-1.5 rounded-full bg-current opacity-40 animate-bounce" />
-            <div className="w-1.5 h-1.5 rounded-full bg-current opacity-40 animate-bounce [animation-delay:0.15s]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-current opacity-40 animate-bounce [animation-delay:0.3s]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce" />
+            <div className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:0.15s]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-foreground/30 animate-bounce [animation-delay:0.3s]" />
           </div>
         </m.div>
       )}

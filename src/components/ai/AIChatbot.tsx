@@ -1,10 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
+import { X, Send } from "lucide-react";
 import { AnimatePresence, m } from "framer-motion";
 import { cn } from "../../lib/utils";
 import { useAIChat } from "./useAIChat";
 import { ChatMessages } from "./ChatMessages";
 import { TourProgress } from "./TourProgress";
+import { AIAvatar } from "./AIAvatar";
 
 export default function AIChatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,11 +36,11 @@ export default function AIChatbot() {
         title="Toggle AI Chat"
         aria-label="Toggle AI Chat"
         className={cn(
-          "fixed bottom-6 right-6 p-4 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all z-50",
-          isOpen ? "scale-0" : "scale-100",
+          "fixed bottom-6 right-6 transition-all z-50",
+          isOpen ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
       >
-        <MessageCircle size={24} />
+        <AIAvatar isThinking={isTyping} />
       </button>
 
       <div
@@ -53,9 +54,12 @@ export default function AIChatbot() {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 bg-primary text-primary-foreground shrink-0">
-          <div>
-            <h3 className="text-lg font-semibold">Portfolio AI Tour</h3>
-            <p className="text-xs opacity-90">Ask me to show you around!</p>
+          <div className="flex items-center gap-3">
+            <AIAvatar isThinking={isTyping} />
+            <div>
+              <h3 className="text-lg font-semibold">Portfolio AI Tour</h3>
+              <p className="text-xs opacity-90">Ask me to show you around!</p>
+            </div>
           </div>
           <button
             onClick={() => setIsOpen(false)}
